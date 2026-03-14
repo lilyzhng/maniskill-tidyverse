@@ -53,8 +53,13 @@ eef_pose = links['eef'].pose
 tcp_pos = eef_pose.p[0].cpu().numpy()
 print(f"Current TCP position: {tcp_pos}")
 
-# Target: 35cm forward, ~table height relative to base_link
-target_pos = np.array([base_p[0] + 0.35, base_p[1], base_p[2] + 0.45])
+# Compute target relative to panda_link0 (the arm base)
+arm_base_p = links['panda_link0'].pose.p[0].cpu().numpy()
+print(f"base_link world pos:    {base_p}")
+print(f"panda_link0 world pos:  {arm_base_p}")
+
+# 30cm forward, centered, 15cm below arm base (comfortable table-height reach)
+target_pos = arm_base_p + np.array([0.30, 0.0, -0.15])
 print(f"Target position: {target_pos}")
 
 # --- Define orientations to test ---
