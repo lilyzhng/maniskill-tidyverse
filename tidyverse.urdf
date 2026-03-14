@@ -25,21 +25,21 @@
     <parent link="root"/>
     <child link="base_x_link"/>
     <axis xyz="1 0 0"/>
-    <limit effort="600" lower="-20" upper="20" velocity="1.0"/>
+    <limit effort="600" lower="-3" upper="3" velocity="1.0"/>
     <dynamics damping="100.0" friction="250"/>
   </joint>
   <joint name="base_y_joint" type="prismatic">
     <parent link="base_x_link"/>
     <child link="base_y_link"/>
     <axis xyz="0 1 0"/>
-    <limit effort="600" lower="-20" upper="20" velocity="1.0"/>
+    <limit effort="600" lower="-3" upper="3" velocity="1.0"/>
     <dynamics damping="100.0" friction="250"/>
   </joint>
   <joint name="base_yaw_joint" type="revolute">
     <parent link="base_y_link"/>
     <child link="base_link"/>
     <axis xyz="0 0 1"/>
-    <limit effort="600" lower="-6.28318" upper="6.28318" velocity="1.5"/>
+    <limit effort="600" lower="-3.14159" upper="3.14159" velocity="1.5"/>
     <dynamics damping="100.0" friction="250"/>
   </joint>
 
