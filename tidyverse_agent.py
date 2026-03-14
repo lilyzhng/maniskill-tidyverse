@@ -13,6 +13,50 @@ from mani_skill.sensors.camera import CameraConfig
 from mani_skill.utils import common, sapien_utils
 from mani_skill.utils.structs.actor import Actor
 
+# --- Monkey-patch scene builders to recognize 'tidyverse' ---
+def _patch_scene_builders():
+    """Add tidyverse init to TableSceneBuilder and RoboCasaSceneBuilder."""
+
+    # Patch TableSceneBuilder (PickCube, etc.)
+    from mani_skill.utils.scene_builder.table.scene_builder import TableSceneBuilder
+    _orig_table_init = TableSceneBuilder.initialize
+
+    def _patched_table_initialize(self, env_idx):
+        _orig_table_init(self, env_idx)
+        if self.env.robot_uids == "tidyverse":
+            b = len(env_idx)
+            qpos = self.env.agent.keyframes["rest"].qpos
+            qpos = (
+                self.env._episode_rng.normal(
+                    0, self.robot_init_qpos_noise, (b, len(qpos))
+                )
+                + qpos
+            )
+            self.env.agent.reset(qpos)
+            self.env.agent.robot.set_pose(sapien.Pose([-0.615, 0, 0]))
+
+    TableSceneBuilder.initialize = _patched_table_initialize
+
+    # Patch RoboCasaSceneBuilder (RoboCasaKitchen, etc.)
+    try:
+        from mani_skill.utils.scene_builder.robocasa.scene_builder import (
+            RoboCasaSceneBuilder,
+        )
+        _orig_robocasa_init = RoboCasaSceneBuilder.initialize
+
+        def _patched_robocasa_initialize(self, env_idx, init_config_idxs=None):
+            _orig_robocasa_init(self, env_idx, init_config_idxs)
+            if self.env.robot_uids == "tidyverse" and self.env.agent is not None:
+                self.env.agent.robot.set_qpos(
+                    self.env.agent.keyframes["rest"].qpos
+                )
+
+        RoboCasaSceneBuilder.initialize = _patched_robocasa_initialize
+    except ImportError:
+        pass  # RoboCasa not available
+
+_patch_scene_builders()
+
 ASSET_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
