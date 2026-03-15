@@ -57,10 +57,11 @@
         <color rgba="0.7 0.7 0.7 1"/>
       </material>
     </visual>
+    <!-- Simplified collision: box approximation of base body (was 150K tri STL) -->
     <collision>
-      <origin rpy="0 0 0" xyz="0 0 0.47225"/>
+      <origin rpy="0 0 0" xyz="-0.198 0 0.309"/>
       <geometry>
-        <mesh filename="tidyverse_base/base_col.stl"/>
+        <box size="0.733 0.523 0.606"/>
       </geometry>
     </collision>
     <inertial>
