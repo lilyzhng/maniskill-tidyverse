@@ -110,6 +110,8 @@ target = MPPose(p=position, q=q_wxyz)
 
 All common grasps use **Ry rotation** to control the approach angle:
 
+![Grasp Orientations](orientation_images/grasp_orientations_grid.png)
+
 | Grasp Type | Euler XYZ (deg) | Euler XYZ (rad) | Quaternion (wxyz) | Description |
 |------------|----------------|-----------------|-------------------|-------------|
 | **Top-down** | `[0, 180, 0]` | `[0, π, 0]` | `[0, 0, 0, -1]` | Gripper straight down, fingers along X |
@@ -120,7 +122,7 @@ To rotate the finger orientation (yaw) around the approach axis, add **Rz**:
 
 | Variant | Euler XYZ (deg) | Description |
 |---------|----------------|-------------|
-| Top-down + yaw 90° | `[0, 180, 90]` | Down, fingers along Y |
+| Top-down + yaw 90° | `[0, 180, 90]` | Down, fingers along Y (bottom-right in grid) |
 | Forward + yaw 45° | `[0, 90, 45]` | Forward, fingers rotated 45° |
 
 ### Code Example
